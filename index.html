@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Y tế Số Toàn diện & An toàn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 50vh;
+            max-height: 400px;
+            min-height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        .nav-link.active {
+            color: #0284c7;
+            border-bottom: 2px solid #0284c7;
+            font-weight: 600;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .roadmap-step {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .roadmap-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-sky-200 selection:text-sky-900">
+
+    <!-- Chosen Palette: Slate & Sky Blue Neutral (Background: #f8fafc, Text: #0f172a, Accents: #0284c7, #0ea5e9, #10b981) -->
+    <!-- Application Structure Plan: Dashboard/Landing Page hybrid structure. Chosen to allow linear storytelling (scrolling) while supporting nonlinear exploration (navigation bar, interactive tabs). It breaks the report into 4 logical views: Vision/Hero, 3 Pillars & Comparison (Interactive), Architecture & Security (Technical deep dive), and Roadmap. This makes the heavy technical and strategic data digestible. -->
+    <!-- Visualization & Content Choices: 
+         - Vision -> Hero Banner -> Immediate impact -> HTML/CSS.
+         - 3 Pillars -> Interactive Tabs -> Allows focus on one pillar at a time without overwhelming the user -> HTML/JS.
+         - System Impact -> Radar Chart (Chart.js) -> Compares proposed vs old system visually to prove the value of the 3 pillars -> Canvas.
+         - Architecture/Security -> CSS Grid Matrix & Accordion -> Organizes technical layers clearly -> HTML/JS.
+         - Roadmap -> Interactive Timeline Cards -> Shows progression visually without needing complex diagrams -> HTML/CSS.
+         All choices avoid SVG/Mermaid in favor of Unicode icons and Canvas/HTML. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="fixed w-full z-50 glass-panel shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl mr-2">🏥</span>
+                    <span class="font-bold text-xl text-slate-800 tracking-tight">HealthTech Pro</span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <button class="nav-link text-slate-600 hover:text-sky-600 px-3 py-2 text-sm font-medium" data-target="tong-quan">Tổng quan</button>
+                    <button class="nav-link text-slate-600 hover:text-sky-600 px-3 py-2 text-sm font-medium" data-target="ba-tru-cot">Ba Trụ Cột</button>
+                    <button class="nav-link text-slate-600 hover:text-sky-600 px-3 py-2 text-sm font-medium" data-target="kien-truc-bao-mat">Kiến trúc & Bảo mật</button>
+                    <button class="nav-link text-slate-600 hover:text-sky-600 px-3 py-2 text-sm font-medium" data-target="lo-trinh">Lộ trình</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-16">
+        
+        <section id="tong-quan" class="relative pt-20 pb-24 lg:pt-32 lg:pb-40 overflow-hidden bg-gradient-to-br from-slate-50 to-sky-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <div class="inline-block mb-4 px-4 py-1.5 rounded-full bg-sky-100 text-sky-800 font-semibold text-sm tracking-wide">
+                    Dự thảo Đề xuất Báo cáo Y tế
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">
+                    Hệ thống Y tế Số <br class="hidden md:block" />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-blue-800">Toàn diện & An toàn</span>
+                </h1>
+                <p class="mt-4 max-w-3xl mx-auto text-xl text-slate-600 leading-relaxed">
+                    Mang dịch vụ chăm sóc sức khỏe chất lượng cao đến mọi người dân với sự tiện lợi và bảo mật tuyệt đối. Khám phá cách chúng tôi tái định nghĩa tương lai y tế.
+                </p>
+                <div class="mt-10 flex justify-center gap-4">
+                    <button class="nav-link bg-sky-600 hover:bg-sky-700 text-white px-8 py-3 rounded-lg font-medium transition shadow-lg shadow-sky-200" data-target="ba-tru-cot">
+                        Khám phá Giải pháp ⬇
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="ba-tru-cot" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">Ba Trụ Cột Cốt Lõi</h2>
+                    <p class="max-w-2xl mx-auto text-slate-600 text-lg">
+                        Phần này trình bày nền tảng chiến lược của hệ thống. Bạn có thể tương tác với các thẻ bên dưới để tìm hiểu chi tiết về Tiện ích, Khả năng Phổ cập và Tính Bảo mật, đồng thời xem biểu đồ đánh giá năng lực so với hệ thống truyền thống.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                    
+                    <div class="lg:col-span-5 space-y-4">
+                        <button id="btn-convenience" class="w-full text-left p-6 rounded-xl border-2 border-sky-500 bg-sky-50 transition-all duration-300 shadow-md">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xl font-bold text-slate-900 flex items-center gap-3">
+                                    <span class="text-2xl">🚀</span> Tiện ích tối đa
+                                </h3>
+                                <span class="text-sky-600 text-xl font-bold">→</span>
+                            </div>
+                        </button>
+                        
+                        <button id="btn-accessibility" class="w-full text-left p-6 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition-all duration-300">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xl font-bold text-slate-900 flex items-center gap-3">
+                                    <span class="text-2xl">🌍</span> Phổ cập mọi đối tượng
+                                </h3>
+                                <span class="text-slate-400 text-xl font-bold">→</span>
+                            </div>
+                        </button>
+                        
+                        <button id="btn-security" class="w-full text-left p-6 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition-all duration-300">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xl font-bold text-slate-900 flex items-center gap-3">
+                                    <span class="text-2xl">🛡️</span> An toàn & Bảo mật
+                                </h3>
+                                <span class="text-slate-400 text-xl font-bold">→</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="lg:col-span-7 flex flex-col gap-8">
+                        <div id="content-display" class="bg-slate-50 p-8 rounded-2xl border border-slate-200 min-h-[250px] shadow-sm fade-in">
+                            <h4 class="text-2xl font-bold text-sky-800 mb-4">Tiện ích tối đa (Convenience)</h4>
+                            <p class="text-slate-700 mb-6 font-medium">Hệ thống loại bỏ các rào cản hành chính rườm rà, tập trung vào trải nghiệm người dùng:</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <span class="text-sky-500 mr-3 mt-1">✔</span>
+                                    <div>
+                                        <strong class="text-slate-900">Đăng ký một chạm:</strong> 
+                                        <span class="text-slate-600">Sử dụng sinh trắc học hoặc căn cước công dân gắn chíp để làm thủ tục trong chưa đầy 30 giây.</span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-sky-500 mr-3 mt-1">✔</span>
+                                    <div>
+                                        <strong class="text-slate-900">Hồ sơ bệnh án điện tử (EHR):</strong> 
+                                        <span class="text-slate-600">Truy cập lịch sử khám chữa bệnh, đơn thuốc và kết quả xét nghiệm mọi lúc, mọi nơi qua ứng dụng di động.</span>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-sky-500 mr-3 mt-1">✔</span>
+                                    <div>
+                                        <strong class="text-slate-900">Tư vấn từ xa (Telemedicine):</strong> 
+                                        <span class="text-slate-600">Kết nối bác sĩ chuyên khoa chỉ sau vài bước bấm, hỗ trợ kê đơn thuốc điện tử gửi thẳng tới nhà thuốc gần nhất.</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <h4 class="text-lg font-bold text-center text-slate-800 mb-2">So sánh Hiệu năng Hệ thống</h4>
+                            <p class="text-sm text-center text-slate-500 mb-6">Mô phỏng sự cải thiện toàn diện so với mô hình cũ</p>
+                            <div class="chart-container">
+                                <canvas id="radarChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kien-truc-bao-mat" class="py-20 bg-slate-900 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold mb-4 text-white">Kiến trúc Hệ thống & Phân tích Bảo mật</h2>
+                    <p class="max-w-2xl mx-auto text-slate-300 text-lg">
+                        Mục này đi sâu vào "xương sống" kỹ thuật của ứng dụng. Khám phá cách dữ liệu được mã hóa, bảo vệ bằng chữ ký số và phân bổ qua các lớp kiến trúc công nghệ hiện đại.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-6 flex items-center text-sky-400">
+                            <span class="text-2xl mr-3">🔒</span> Lớp Bảo mật Chuyên sâu
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-sky-500 transition cursor-pointer" onclick="toggleDetails('sec-1')">
+                                <div class="flex justify-between items-center">
+                                    <h4 class="text-lg font-bold">A. Mã hóa dữ liệu tĩnh (Data at Rest)</h4>
+                                    <span id="icon-sec-1" class="text-sky-400 font-bold text-xl">+</span>
+                                </div>
+                                <div id="sec-1" class="hidden mt-3 text-slate-300 text-sm border-t border-slate-600 pt-3">
+                                    Dữ liệu trên Server được mã hóa bằng chuẩn <strong class="text-white">AES-256</strong>. Trong trường hợp xấu nhất nếu ổ cứng bị đánh cắp vật lý hoặc truy cập trái phép, dữ liệu thu được vẫn chỉ là những chuỗi ký tự vô nghĩa, không thể giải mã nếu không có khóa hệ thống.
+                                </div>
+                            </div>
+                            <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-sky-500 transition cursor-pointer" onclick="toggleDetails('sec-2')">
+                                <div class="flex justify-between items-center">
+                                    <h4 class="text-lg font-bold">B. Chữ ký số & Xác thực</h4>
+                                    <span id="icon-sec-2" class="text-sky-400 font-bold text-xl">+</span>
+                                </div>
+                                <div id="sec-2" class="hidden mt-3 text-slate-300 text-sm border-t border-slate-600 pt-3">
+                                    Mọi đơn thuốc hoặc kết quả xét nghiệm được phát hành đều đính kèm <strong class="text-white">chữ ký số</strong> của bác sĩ chỉ định. Điều này loại bỏ hoàn toàn rủi ro làm giả hồ sơ y tế, đảm bảo truy xuất nguồn gốc chính xác.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-6 flex items-center text-sky-400">
+                            <span class="text-2xl mr-3">⚙️</span> Cấu trúc Công nghệ
+                        </h3>
+                        <div class="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-900 border-b border-slate-700">
+                                        <th class="p-4 font-semibold text-slate-300">Thành phần</th>
+                                        <th class="p-4 font-semibold text-slate-300">Công nghệ</th>
+                                        <th class="p-4 font-semibold text-slate-300">Vai trò</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-slate-700 hover:bg-slate-750 transition bg-slate-800">
+                                        <td class="p-4 font-medium text-white flex items-center gap-2"><span class="text-lg">☁️</span> Lưu trữ</td>
+                                        <td class="p-4 text-sky-400 font-mono text-sm">Hybrid Cloud</td>
+                                        <td class="p-4 text-slate-300 text-sm">Đảm bảo tốc độ truy xuất và tính sẵn sàng cao (High Availability).</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-700 hover:bg-slate-750 transition bg-slate-800/50">
+                                        <td class="p-4 font-medium text-white flex items-center gap-2"><span class="text-lg">🛡️</span> Bảo mật</td>
+                                        <td class="p-4 text-sky-400 font-mono text-sm">AES-256 + RSA</td>
+                                        <td class="p-4 text-slate-300 text-sm">Mã hóa tiêu chuẩn quân sự, bảo vệ dữ liệu truyền tải và lưu trữ.</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-750 transition bg-slate-800">
+                                        <td class="p-4 font-medium text-white flex items-center gap-2"><span class="text-lg">⚡</span> Giao tiếp</td>
+                                        <td class="p-4 text-sky-400 font-mono text-sm">gRPC / MQTT</td>
+                                        <td class="p-4 text-slate-300 text-sm">Truyền tải bản tin siêu nhanh, tiết kiệm băng thông và pin thiết bị.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="lo-trinh" class="py-20 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">Lộ trình Triển khai (Roadmap)</h2>
+                    <p class="max-w-2xl mx-auto text-slate-600 text-lg">
+                        Theo dõi 4 giai đoạn chiến lược để đưa hệ thống từ bản nháp ý tưởng đến hiện thực áp dụng trên toàn quốc.
+                    </p>
+                </div>
+
+                <div class="relative">
+                    <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-sky-200 rounded-full"></div>
+                    
+                    <div class="space-y-12">
+                        
+                        <div class="relative flex flex-col md:flex-row items-center justify-between w-full">
+                            <div class="md:w-5/12 w-full roadmap-step bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative z-10 text-right md:pr-8">
+                                <span class="inline-block px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-full mb-2">Khởi động</span>
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Giai đoạn 1</h3>
+                                <p class="text-slate-600">Khảo sát toàn diện nhu cầu thực tế của người dùng, tập trung vào các nhóm yếu thế.</p>
+                            </div>
+                            <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-sky-500 border-4 border-white shadow flex items-center justify-center z-20 text-white font-bold text-xs hidden md:flex">1</div>
+                            <div class="md:w-5/12 w-full hidden md:block"></div>
+                        </div>
+
+                        <div class="relative flex flex-col md:flex-row items-center justify-between w-full">
+                            <div class="md:w-5/12 w-full hidden md:block"></div>
+                            <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-sky-500 border-4 border-white shadow flex items-center justify-center z-20 text-white font-bold text-xs hidden md:flex">2</div>
+                            <div class="md:w-5/12 w-full roadmap-step bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative z-10 md:pl-8">
+                                <span class="inline-block px-3 py-1 bg-sky-100 text-sky-700 text-xs font-bold rounded-full mb-2">Phát triển</span>
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Giai đoạn 2</h3>
+                                <p class="text-slate-600">Xây dựng lõi hệ thống an toàn (MVP - Minimum Viable Product) và thiết kế giao diện cơ bản.</p>
+                            </div>
+                        </div>
+
+                        <div class="relative flex flex-col md:flex-row items-center justify-between w-full">
+                            <div class="md:w-5/12 w-full roadmap-step bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative z-10 text-right md:pr-8">
+                                <span class="inline-block px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-full mb-2">Đánh giá</span>
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Giai đoạn 3</h3>
+                                <p class="text-slate-600">Thử nghiệm thực tế tại 3 bệnh viện lớn trọng điểm để thu thập dữ liệu và phản hồi.</p>
+                            </div>
+                            <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-sky-500 border-4 border-white shadow flex items-center justify-center z-20 text-white font-bold text-xs hidden md:flex">3</div>
+                            <div class="md:w-5/12 w-full hidden md:block"></div>
+                        </div>
+
+                        <div class="relative flex flex-col md:flex-row items-center justify-between w-full">
+                            <div class="md:w-5/12 w-full hidden md:block"></div>
+                            <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-green-500 border-4 border-white shadow flex items-center justify-center z-20 text-white font-bold text-xs hidden md:flex">4</div>
+                            <div class="md:w-5/12 w-full roadmap-step bg-white p-6 rounded-xl border border-green-200 shadow-sm relative z-10 md:pl-8 border-l-4 border-l-green-500">
+                                <span class="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full mb-2">Mở rộng</span>
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Giai đoạn 4</h3>
+                                <p class="text-slate-600">Triển khai diện rộng trên toàn quốc, tích hợp đồng bộ các hệ thống hành chính liên quan.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 border-t border-slate-800 text-slate-400 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+                    <span>🏥</span> HealthTech Pro
+                </span>
+                <p class="text-sm mt-1">Báo cáo Đề xuất Hệ thống Y tế Số</p>
+            </div>
+            <div class="text-sm text-right">
+                <p class="text-slate-300 font-medium">Người trình bày: <span class="text-white">[Tên của bạn]</span></p>
+                <p>Liên hệ: <a href="mailto:email@example.com" class="text-sky-400 hover:underline">[Email của bạn]</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const contentData = {
+            convenience: {
+                title: 'Tiện ích tối đa (Convenience)',
+                desc: 'Hệ thống loại bỏ các rào cản hành chính rườm rà, tập trung vào trải nghiệm người dùng:',
+                color: 'sky',
+                items: [
+                    { bold: 'Đăng ký một chạm:', text: 'Sử dụng sinh trắc học hoặc căn cước công dân gắn chíp để làm thủ tục trong chưa đầy 30 giây.' },
+                    { bold: 'Hồ sơ bệnh án điện tử (EHR):', text: 'Truy cập lịch sử khám chữa bệnh, đơn thuốc và kết quả xét nghiệm mọi lúc, mọi nơi qua ứng dụng di động.' },
+                    { bold: 'Tư vấn từ xa (Telemedicine):', text: 'Kết nối bác sĩ chuyên khoa chỉ sau vài bước bấm, hỗ trợ kê đơn thuốc điện tử gửi thẳng tới nhà thuốc gần nhất.' }
+                ]
+            },
+            accessibility: {
+                title: 'Phổ cập mọi đối tượng (Accessibility)',
+                desc: 'Thiết kế hướng tới sự bình đẳng trong tiếp cận y tế, không ai bị bỏ lại phía sau:',
+                color: 'amber',
+                items: [
+                    { bold: 'Giao diện đa phương thức:', text: 'Hỗ trợ điều khiển bằng giọng nói cho người khiếm thị và giao diện trực quan cho người cao tuổi.' },
+                    { bold: 'Hạ tầng nhẹ:', text: 'Hoạt động mượt mà trên cả điện thoại cũ và vùng mạng yếu (3G).' },
+                    { bold: 'Đa ngôn ngữ:', text: 'Hỗ trợ tiếng dân tộc để đảm bảo mọi vùng miền đều có thể tiếp cận và sử dụng.' }
+                ]
+            },
+            security: {
+                title: 'An toàn & Bảo mật tuyệt đối (Security)',
+                desc: 'Đây là ưu tiên số 1 để bảo vệ toàn vẹn dữ liệu nhạy cảm của người bệnh:',
+                color: 'emerald',
+                items: [
+                    { bold: 'Mã hóa đầu cuối:', text: 'Toàn bộ dữ liệu bệnh án được mã hóa, chỉ bệnh nhân và bác sĩ được cấp quyền mới có thể xem.' },
+                    { bold: 'Công nghệ Blockchain:', text: 'Lưu trữ lịch sử thay đổi hồ sơ, đảm bảo tuyệt đối không thể bị giả mạo hay xóa bỏ trái phép.' },
+                    { bold: 'Xác thực 2 lớp (2FA):', text: 'Mọi thao tác quan trọng đều yêu cầu xác thực bảo mật sinh trắc học cá nhân.' }
+                ]
+            }
+        };
+
+        const btns = {
+            convenience: document.getElementById('btn-convenience'),
+            accessibility: document.getElementById('btn-accessibility'),
+            security: document.getElementById('btn-security')
+        };
+        
+        const displayPanel = document.getElementById('content-display');
+
+        function updateDisplay(key) {
+            Object.keys(btns).forEach(k => {
+                btns[k].className = "w-full text-left p-6 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-300 transition-all duration-300";
+                btns[k].querySelector('span:last-child').className = "text-slate-400 text-xl font-bold";
+                btns[k].querySelector('span:last-child').innerText = "→";
+            });
+
+            const activeBtn = btns[key];
+            activeBtn.className = "w-full text-left p-6 rounded-xl border-2 border-sky-500 bg-sky-50 transition-all duration-300 shadow-md";
+            activeBtn.querySelector('span:last-child').className = "text-sky-600 text-xl font-bold";
+            activeBtn.querySelector('span:last-child').innerText = "↓";
+
+            const data = contentData[key];
+            
+            displayPanel.classList.remove('fade-in');
+            void displayPanel.offsetWidth; 
+            displayPanel.classList.add('fade-in');
+
+            let htmlStr = `
+                <h4 class="text-2xl font-bold text-slate-800 mb-4">${data.title}</h4>
+                <p class="text-slate-700 mb-6 font-medium">${data.desc}</p>
+                <ul class="space-y-4">
+            `;
+            
+            data.items.forEach(item => {
+                htmlStr += `
+                    <li class="flex items-start">
+                        <span class="text-${data.color}-500 mr-3 mt-1 text-lg">✔</span>
+                        <div>
+                            <strong class="text-slate-900">${item.bold}</strong> 
+                            <span class="text-slate-600">${item.text}</span>
+                        </div>
+                    </li>
+                `;
+            });
+            htmlStr += `</ul>`;
+            
+            displayPanel.innerHTML = htmlStr;
+        }
+
+        Object.keys(btns).forEach(key => {
+            btns[key].addEventListener('click', () => updateDisplay(key));
+        });
+
+        function toggleDetails(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.innerText = '-';
+            } else {
+                el.classList.add('hidden');
+                icon.innerText = '+';
+            }
+        }
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                const targetSection = document.getElementById(targetId);
+                const navHeight = 64; 
+                const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            const navHeight = 70;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - navHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-target') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Tiện ích người dùng', 'Khả năng Phổ cập', 'Mức độ Bảo mật', 'Tốc độ xử lý', 'Liên thông dữ liệu'],
+                datasets: [{
+                    label: 'Hệ thống Đề xuất',
+                    data: [95, 90, 100, 95, 85],
+                    backgroundColor: 'rgba(14, 165, 233, 0.25)',
+                    borderColor: 'rgba(14, 165, 233, 1)',
+                    pointBackgroundColor: 'rgba(14, 165, 233, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(14, 165, 233, 1)',
+                    borderWidth: 2
+                }, {
+                    label: 'Hệ thống Hiện tại',
+                    data: [40, 50, 60, 45, 30],
+                    backgroundColor: 'rgba(148, 163, 184, 0.2)',
+                    borderColor: 'rgba(148, 163, 184, 1)',
+                    pointBackgroundColor: 'rgba(148, 163, 184, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(148, 163, 184, 1)',
+                    borderWidth: 2,
+                    borderDash: [5, 5]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0, 0, 0, 0.05)' },
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                        pointLabels: {
+                            font: { family: "'Inter', sans-serif", size: 11, weight: '600' },
+                            color: '#475569'
+                        },
+                        ticks: {
+                            display: false,
+                            min: 0,
+                            max: 100
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            font: { family: "'Inter', sans-serif", size: 12 },
+                            color: '#334155'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleFont: { family: "'Inter', sans-serif", size: 13 },
+                        bodyFont: { family: "'Inter', sans-serif", size: 13 },
+                        padding: 10,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return ' ' + context.dataset.label + ': ' + context.raw + '/100';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
